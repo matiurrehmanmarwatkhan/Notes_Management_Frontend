@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import api from "../utils/api.js";
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -16,16 +21,17 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await axios.post('/auth/register', formData);
+      const response = await api.post("/auth/register", formData);
       if (response.data) {
-        toast.success(response.data.message || 'Account created successfully!');
-        navigate('/login');
+        toast.success(response.data.message || "Account created successfully!");
+        navigate("/login");
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Something went wrong during sign up.';
+      const errorMsg =
+        err.response?.data?.message || "Something went wrong during sign up.";
       setError(errorMsg);
       toast.error(errorMsg);
     } finally {
@@ -72,12 +78,22 @@ const SignUp = () => {
               required
             />
           </div>
-          <button type="submit" className="w-full mt-2 bg-primary text-white hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(99,102,241,0.3)] px-5 py-3 rounded-lg font-semibold transition-all duration-300" disabled={loading}>
-            {loading ? 'Creating account...' : 'Sign Up'}
+          <button
+            type="submit"
+            className="w-full mt-2 bg-primary text-white hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(99,102,241,0.3)] px-5 py-3 rounded-lg font-semibold transition-all duration-300"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
         <p className="text-center mt-6 text-slate-400">
-          Already have an account? <Link to="/login" className="text-primary hover:text-primary-hover transition-colors">Login</Link>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-primary hover:text-primary-hover transition-colors"
+          >
+            Login
+          </Link>
         </p>
       </div>
     </div>
